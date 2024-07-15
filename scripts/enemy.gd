@@ -5,7 +5,21 @@ var player_chase = false
 var player = null
 var current_direction = "none"
 
+var healt = 100
+var player_in_attack_range = false
+var can_take_damage = true
+
+func _ready():
+	var animation = $AnimatedSprite2D
+	animation.play("front_idle")
+
 func _physics_process(delta):
+	player_attack()
+	if healt <= 0:
+		healt = 0
+		print("Enemy has been killed")
+		queue_free()
+	
 	if player_chase:
 		##chages the speed of enemy
 		velocity = (player.get_global_position() - position).normalized() * speed * delta
@@ -31,36 +45,9 @@ func _on_detection_area_body_entered(body):
 	player = body
 	player_chase = true
 
-func _on_detection_area_body_exited(body):
+func _on_detection_area_body_exited(_body):
 	player = null
 	player_chase = false
-
-func player_movement(delta):
-	if Input.is_action_pressed("ui_right"):
-		current_direction = "right"
-		play_animation(1)
-		velocity.x = speed
-		velocity.y = 0
-	elif Input.is_action_pressed("ui_left"):
-		current_direction = "left"
-		play_animation(1)
-		velocity.x = -speed
-		velocity.y = 0
-	elif Input.is_action_pressed("ui_down"):
-		current_direction = "down"
-		play_animation(1)
-		velocity.y = speed
-		velocity.x = 0
-	elif Input.is_action_pressed("ui_up"):
-		current_direction = "up"
-		play_animation(1)
-		velocity.y = -speed
-		velocity.x = 0
-	else:
-		play_animation(0)
-		velocity.x = 0
-		velocity.y = 0
-	move_and_slide()
 
 func play_animation(movement):
 	var dir = current_direction
@@ -90,3 +77,26 @@ func play_animation(movement):
 			animation.play("back_walk")
 		elif movement == 0:
 			animation.play("back_idle")
+
+func _on_enemy_hitbox_body_entered(body):
+	if body.has_method("player"):
+		player_in_attack_range = true
+
+func _on_enemy_hitbox_body_exited(body):
+	if body.has_method("player"):
+		player_in_attack_range = false
+
+func enemy():
+	pass
+
+func player_attack():
+	if player_in_attack_range and global.player_current_attack:
+		if can_take_damage:
+			healt -= 20
+			print("Current enemy healt: ", healt)
+			$take_damage_cooldown.start()
+			can_take_damage = false
+
+
+func _on_take_damage_cooldown_timeout():
+	can_take_damage = true
