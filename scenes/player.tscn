@@ -446,12 +446,12 @@ wait_time = 0.5
 wait_time = 0.5
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(62, -11)
 zoom = Vector2(4, 4)
-limit_left = 0
+limit_left = -160
 limit_top = 0
 limit_right = 320
 limit_bottom = 192
+position_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
