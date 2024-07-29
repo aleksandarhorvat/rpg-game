@@ -17,6 +17,8 @@ func _physics_process(delta):
 	player_movement(delta)
 	enemy_attack()
 	play_attack_animation()
+	current_camera()
+	
 	if healt <= 0:
 		player_alive = false
 		healt = 0
@@ -134,3 +136,11 @@ func enemy_attack():
 
 func _on_attack_cooldown_timeout():
 	enemy_attack_cooldown = true
+
+func current_camera():
+	if global.current_scene == "world":
+		$world_camera.enabled = true
+		$cliff_side_camera.enabled = false
+	elif global.current_scene == "cliff_side":
+		$world_camera.enabled = false
+		$cliff_side_camera.enabled = true
