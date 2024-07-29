@@ -261,4 +261,3 @@ position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_kpq4d")
 
 [connection signal="body_entered" from="cliff_side_transition_point" to="." method="_on_cliff_side_transition_point_body_entered"]
-[connection signal="body_exited" from="cliff_side_transition_point" to="." method="_on_cliff_side_transition_point_body_exited"]

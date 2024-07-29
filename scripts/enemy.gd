@@ -15,6 +15,8 @@ func _ready():
 
 func _physics_process(delta):
 	player_attack()
+	update_healt()
+	
 	if healt <= 0:
 		healt = 0
 		print("Enemy has been killed")
@@ -97,6 +99,13 @@ func player_attack():
 			$take_damage_cooldown.start()
 			can_take_damage = false
 
-
 func _on_take_damage_cooldown_timeout():
 	can_take_damage = true
+
+func update_healt():
+	var healtbar = $healtbar
+	healtbar.value = healt
+	if healt >= 100:
+		healtbar.visible = false
+	else:
+		healtbar.visible = true

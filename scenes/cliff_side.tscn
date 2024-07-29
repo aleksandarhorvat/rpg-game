@@ -247,4 +247,3 @@ position = Vector2(2.5, 272)
 shape = SubResource("RectangleShape2D_ljnta")
 
 [connection signal="body_entered" from="world_transition_point" to="." method="_on_world_transition_point_body_entered"]
-[connection signal="body_exited" from="world_transition_point" to="." method="_on_world_transition_point_body_exited"]

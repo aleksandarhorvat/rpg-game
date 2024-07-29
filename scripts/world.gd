@@ -14,14 +14,9 @@ func _ready():
 func _process(_delta):
 	change_scene()
 
-
 func _on_cliff_side_transition_point_body_entered(body):
 	if body.has_method("player"):
 		global.transition_scene = true
-
-#func _on_cliff_side_transition_point_body_exited(body):
-	#if body.has_method("player"):
-		#global.transition_scene = false
 
 func change_scene():
 	if global.transition_scene == true:

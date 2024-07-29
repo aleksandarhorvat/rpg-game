@@ -5,7 +5,7 @@ var current_direction = "none"
 
 var enemy_in_attack_range = false
 var enemy_attack_cooldown = true
-var healt = 200
+var healt = 100
 var player_alive = true
 var attack_ip = false
 
@@ -18,6 +18,7 @@ func _physics_process(delta):
 	enemy_attack()
 	play_attack_animation()
 	current_camera()
+	update_healt()
 	
 	if healt <= 0:
 		player_alive = false
@@ -129,7 +130,7 @@ func player():
 
 func enemy_attack():
 	if enemy_in_attack_range && enemy_attack_cooldown:
-		healt -= 20
+		healt -= 10
 		enemy_attack_cooldown = false
 		$attack_cooldown.start()
 		print("Current healt: ", healt)
@@ -144,3 +145,19 @@ func current_camera():
 	elif global.current_scene == "cliff_side":
 		$world_camera.enabled = false
 		$cliff_side_camera.enabled = true
+
+func update_healt():
+	var healtbar = $healtbar
+	healtbar.value = healt
+	if healt >= 100:
+		healtbar.visible = false
+	else:
+		healtbar.visible = true
+
+func _on_regen_timer_timeout():
+	if healt < 100:
+		healt = healt + 20
+		if healt > 100:
+			healt = 100
+	if healt <= 0:
+		healt = 0
